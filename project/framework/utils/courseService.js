@@ -19,6 +19,7 @@ export const setHeader = () => {
 
 export const route_createCourse = (endpoint,token) => `${endpoint}?wstoken=${token}&query`;
 export const route_getCourse = (endpoint, token, courseID) => `${endpoint}?wstoken=${token}${courseID}`;
+export const route_deleteCourse = (endpoint, token, courseID) => `${endpoint}?wstoken=${token}${courseID}`;
 
 export function createCourse(endpoint, token){
   console.log(`inside create course token=${token}`)
@@ -65,4 +66,14 @@ export function getCourse(endpoint,token,courseID) {
     })
     failureRate.add(!checkGetResponse)
   }
+}
+
+export function deleteCourse(endpoint, token, courseID) {
+  console.log(`inside delete course, course id is ${courseID}`)
+  let deleteResponse = http.del(`${route_deleteCourse(endpoint,token,courseID)}`, null, setHeader())
+  checkDeleteResponse = check(delete {
+    "delete course status is 200 " : r => r.status === 200,
+  })
+  failureRate.add(!checkDeleteResponse);
+  deleteCourseTrend.add(deleteResponse.timings.duration);
 }
