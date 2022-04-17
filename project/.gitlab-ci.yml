@@ -1,0 +1,16 @@
+stages:
+  - test
+
+k6-test
+  stage: test
+  image: loadimpact/k6
+  entrypoint: ['']
+  only
+    - master
+  script:
+    -k6 run ./tests 01-script.js --vus 5 --duration 5s
+  cache: {}
+  tags:
+    - gitlab-org-docker
+
+  
